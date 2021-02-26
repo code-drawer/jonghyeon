@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main() {
+	printf("계산하고 싶은 단=");
+	int n;
+	scanf_s("%d", &n);
+	for (int i = 1; i < 10; ++i) {
+		printf("%d * %d = %d\n", n, i, n * i);
+	}
+	return 0;
+}
