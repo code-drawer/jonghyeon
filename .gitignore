@@ -9,3 +9,7 @@
 *.filters
 *.user
 *.sln
+/week7/week7/Debug
+/week7/.vs/week7/v16/ipch/AutoPCH
+/week7/.vs/week7/v16
+/week7/Debug
