@@ -10,6 +10,7 @@ public:
 
 class B : public A {
 	virtual void show() { cout << "B" << endl; }
+	//자식클래스에서는 virtual문이 꼭 필요하지는 않음.
 };
 
 int main() {
