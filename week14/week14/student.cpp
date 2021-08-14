@@ -1,12 +1,11 @@
 #include "student.h"
 //맴버함수 (외부)구현용 cpp파일
 
-student::student(string 이름, string 성별, string 비번, string 권한) {//생성자 구현
+student::student(string 이름, string 성별, string 비번) {
+	//생성자 구현
 	this->이름 = 이름;
 	this->성별 = 성별;
 	this->비번 = 비번;
-
-	this->권한 = 권한;
 }
 string student::이름줘() {
 	return 이름;
@@ -25,4 +24,10 @@ void student::비번바꿔(string 비번) {
 		this->비번 = 비번;
 	else
 		cout << "얘!권한이 없단다!" << endl;
+}
+string student::권한줘() {
+	return 권한;
+}
+void student::권한바꿔() {
+	this->권한 = "관리자";
 }
