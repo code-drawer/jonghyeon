@@ -14,20 +14,14 @@ void student::이름바꿔(string 이름) {
 	this->이름 = 이름;
 }
 string student::비번줘() {
-	if (권한 == "관리자")
+	if (권한 == 관리자)
 		return 비번;
 	else
 		return "얘!권한이 없단다!";
 }
 void student::비번바꿔(string 비번) {
-	if (권한 == "관리자")
+	if (권한 == 관리자)
 		this->비번 = 비번;
 	else
 		cout << "얘!권한이 없단다!" << endl;
-}
-string student::권한줘() {
-	return 권한;
-}
-void student::권한바꿔() {
-	this->권한 = "관리자";
 }
