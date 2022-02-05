@@ -1,8 +1,7 @@
-//책 반납
-
 #include <iostream>
 #include <tuple>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -10,6 +9,7 @@ int main() {
 	vector<tuple<string, vector<string>>> 회원목록;
 
 	auto 책추가 = [&]() {
+		cout << "추가 할 책을 입력하시오" << endl;
 		string temp;
 		cin >> temp;
 		도서목록.push_back({ temp, false });
@@ -18,6 +18,7 @@ int main() {
 			   ;을 마지막에 붙여주어야만 한다.*/
 
 	auto 회원추가 = [&]() {
+		cout << "추가 할 회원을 입력하시오" << endl;
 		string temp;
 		cin >> temp;
 		회원목록.push_back({ temp, vector<string>{}
@@ -27,12 +28,14 @@ int main() {
 	};
 
 	auto 책삭제 = [&]() {
+		cout << "몇번째 책을 삭제하시겠습니까" << endl;
 		int temp;
 		cin >> temp;
 		도서목록.erase(도서목록.begin()+temp-1);
 	};
 
 	auto 회원삭제 = [&]() {
+		cout << "몇번째 회원을 삭제하시겠습니까" << endl;
 		int temp;
 		cin >> temp;
 		회원목록.erase(회원목록.begin() + temp - 1);
@@ -43,6 +46,7 @@ int main() {
 	책삭제();
 
 	auto 도서목록조회 = [&]() {
+		cout << "도서목록" << endl;
 		for (auto& elem : 도서목록) {
 			cout << get<0>(elem) << endl;
 		}
@@ -60,6 +64,7 @@ int main() {
 	회원삭제();
 
 	auto 회원목록조회 = [&]() {
+		cout << "회원목록" << endl;
 		for (auto& elem : 회원목록) {
 			cout << get<0>(elem) << endl;
 		}
@@ -71,6 +76,7 @@ int main() {
 
 
 	auto 대출가능목록조회 = [&]() {
+		cout << "대출 가능 목록" << endl;
 		for (auto& elem : 도서목록) {
 			if (not get<1>(elem))
 			cout << get<0>(elem) << endl;
@@ -79,9 +85,11 @@ int main() {
 
 	auto 대출 = [&]() {
 		회원목록조회();
+		cout << "당신은 몇번째 회원입니까" << endl;
 		int num;
 		cin >> num;
 		대출가능목록조회();
+		cout << "대출할 책을 입력하시오" << endl;
 		string temp;
 		cin >> temp;
 		for (auto& elem : 도서목록) {
@@ -102,5 +110,36 @@ int main() {
 		cout << endl;
 	}
 
+	auto 반납 = [&]() {
+		string id;
+		string temp;
+		cout << "회원이름을 입력하시오" << endl;
+		cin >> id;
+		cout << "반납 할 책을 입력하시오" << endl;
+		cin >> temp;
+
+
+		for (auto& elem : 도서목록) {
+			if (get<0>(elem) == temp and get<1>(elem) == true) {
+				get<1>(elem) = false;
+				break;
+			}
+		}
+
+		for (auto& elem : 회원목록) {
+			if (get<0>(elem) == id) {
+				auto& v = get<1>(elem);
+				/*'&'를 써줌으로써 get<1>(elem)을 단순 복사하는게 아니라
+				그 자체를 참조하게 된다.*/
+				auto i = find(v.begin(), v.end(), temp) - v.begin();
+				v.erase(v.begin() + i);
+				break;
+			}
+		}
+	};
+
+	반납();
+
 	return 0;
 }
+
