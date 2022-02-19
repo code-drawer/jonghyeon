@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 using namespace std;
 
 class Lib {
@@ -20,10 +21,16 @@ class Lib {
 	class User {
 	public:
 		string userName;
+		int pw;
 		vector<string> 대출목록;
-		User(string userName) {
+		User(string userName, int pw) {
 			this->userName = userName;
+			this->pw = pw;
 		}
+
+		/*string get_userName() {
+			return userName;
+		}*/
 	};
 
 	vector<Book> books;
@@ -36,4 +43,8 @@ public:
 	void user_list();
 	void add_user();
 	void del_user();
+
+	vector<User> get_users() {
+		return users;
+	}
 };
