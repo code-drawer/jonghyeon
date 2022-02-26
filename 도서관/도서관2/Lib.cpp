@@ -37,7 +37,7 @@ void Lib::add_user() {
 	string name;
 	cin >> name;
 	cout << "비밀번호를 등록하세요" << endl;
-	int pw;
+	string pw;
 	cin >> pw;
 	users.emplace_back(name, pw);
 }
@@ -47,7 +47,7 @@ void Lib::del_user() {
 	string name;
 	cin >> name;
 	cout << "비밀번호를 입력하시오" << endl;
-	int pw;
+	string pw;
 	cin >> pw;
 	auto iter = find_if(users.begin(), users.end(),
 		[name, pw](User temp) {return temp.userName == name and temp.pw == pw; });

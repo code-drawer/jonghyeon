@@ -21,16 +21,12 @@ class Lib {
 	class User {
 	public:
 		string userName;
-		int pw;
+		string pw;
 		vector<string> 대출목록;
-		User(string userName, int pw) {
+		User(string userName, string pw) {
 			this->userName = userName;
 			this->pw = pw;
 		}
-
-		/*string get_userName() {
-			return userName;
-		}*/
 	};
 
 	vector<Book> books;
@@ -44,7 +40,11 @@ public:
 	void add_user();
 	void del_user();
 
-	vector<User> get_users() {
+	vector<Book>& get_books() {
+		return books;
+	}
+
+	vector<User>& get_users() {
 		return users;
 	}
 };
