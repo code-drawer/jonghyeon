@@ -2,7 +2,7 @@
 
 void Lib::book_list() {
 	for (auto& elem : books) {
-		cout << elem.bookName << " ";
+		cout << elem.bookName << " " << elem.author << endl;
 	}
 	cout << endl;
 }
@@ -53,4 +53,56 @@ void Lib::del_user() {
 		[name, pw](User temp) {return temp.userName == name and temp.pw == pw; });
 	if (iter == users.end()) { cout << "이름 또는 비밀번호가 일치하지 않습니다." << endl; }
 	else users.erase(iter);
+}
+
+bool Lib::log_in(string name, string pw) {
+	auto iter = find_if(users.begin(), users.end(),
+		[name, pw](User temp) {return temp.userName == name and temp.pw == pw; });
+	if (iter == users.end()) return false;
+	else return true;
+}
+
+void Lib::bollow_book(string name, string pw) {
+	cout << "빌릴 책을 입력하시오" << endl;
+	string bookName;
+	cin >> bookName;
+	cout << "저자를 입력하시오" << endl;
+	string author;
+	cin >> author;
+
+	auto bookIter = find_if(books.begin(), books.end(),
+		[bookName, author](Book temp) { return temp.bookName == bookName and temp.author == author; });
+	if (bookIter == books.end()) {
+		cout << "해당하는 도서가 존재하지 않습니다." << endl;
+		return;
+	}
+	else bookIter->대출여부 = true;
+
+	auto userIter = find_if(users.begin(), users.end(),
+		[name, pw](User temp) {return temp.userName == name and temp.pw == pw; });
+
+	userIter->대출목록.push_back(bookIter);
+}
+
+void Lib::return_book(string name, string pw) {
+	auto userIter = find_if(users.begin(), users.end(),
+		[name, pw](User temp) { return temp.userName == name and temp.pw == pw; });
+
+	cout << "어떤 책을 반납하시겠습니까?" << endl;
+	for (const auto& elem : userIter->대출목록)
+		cout << elem->bookName << " " << elem->author << endl;
+	string bookName;
+	string author;
+	cin >> bookName >> author;
+
+	auto bookIter = find_if(userIter->대출목록.begin(), userIter->대출목록.end(),
+		[bookName, author](vector<Book>::iterator temp) {
+			return temp->bookName == bookName and temp->author == author;
+		});
+
+	if (bookIter == userIter->대출목록.end()) return;
+	else {
+		userIter->대출목록.erase(bookIter);
+		
+	}
 }
