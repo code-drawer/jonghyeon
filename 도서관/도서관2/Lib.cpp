@@ -102,7 +102,11 @@ void Lib::return_book(string name, string pw) {
 
 	if (bookIter == userIter->대출목록.end()) return;
 	else {
+		(userIter->대출목록[bookIter - (userIter->대출목록.begin())])->대출여부 = false;
+		//(*bookIter)->대출여부 = false; 로 쓰는 것이 더 효율적이다.
+		//삭제한 bookIter가 가리키는 Book객체(books의 원소)의 '대출여부'를 false로 바꾸어야 한다.
+
 		userIter->대출목록.erase(bookIter);
-		
 	}
 }
+// *(v.begin()) == v[0]가 성립한다.
