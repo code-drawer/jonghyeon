@@ -76,31 +76,53 @@ void Lib::bollow_book(string name, string pw) {
 		cout << "해당하는 도서가 존재하지 않습니다." << endl;
 		return;
 	}
+
+	else if (bookIter->대출여부 == true) {
+		cout<< "해당 도서는 현재 대출중입니다." << endl;
+		return;
+	}
+
 	else bookIter->대출여부 = true;
 
 	auto userIter = find_if(users.begin(), users.end(),
 		[name, pw](User temp) {return temp.userName == name and temp.pw == pw; });
 
 	userIter->대출목록.push_back(bookIter);
+
+	/*fstream file{ "books.txt",ios::out | ios::app };
+	file << true;
+	file.close();*/
 }
 
 void Lib::return_book(string name, string pw) {
 	auto userIter = find_if(users.begin(), users.end(),
 		[name, pw](User temp) { return temp.userName == name and temp.pw == pw; });
 
+	if (userIter->대출목록.empty()) {
+		cout<< "아직 빌린 책이 없어요ㅠㅠ" << endl;
+		return; }
+
 	cout << "어떤 책을 반납하시겠습니까?" << endl;
 	for (const auto& elem : userIter->대출목록)
 		cout << elem->bookName << " " << elem->author << endl;
+
 	string bookName;
 	string author;
-	cin >> bookName >> author;
+	cout << "도서명 : ";
+	cin >> bookName;
+	cout << "저자 : ";
+	cin >> author;
 
 	auto bookIter = find_if(userIter->대출목록.begin(), userIter->대출목록.end(),
 		[bookName, author](vector<Book>::iterator temp) {
 			return temp->bookName == bookName and temp->author == author;
 		});
 
-	if (bookIter == userIter->대출목록.end()) return;
+	if (bookIter == userIter->대출목록.end()) {
+		cout<< "잘못 입력하셨습니다." << endl;
+		return;
+	}
+
 	else {
 		(userIter->대출목록[bookIter - (userIter->대출목록.begin())])->대출여부 = false;
 		//(*bookIter)->대출여부 = false; 로 쓰는 것이 더 효율적이다.

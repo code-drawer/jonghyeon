@@ -35,7 +35,13 @@ int main() {
 	}
 	ifs.close();
 
+	string tokenName;
+	fstream token{ "token.txt",ios::in };  //로그인토큰파일 읽어옴
+	token >> tokenName;
+	token.close();
+
 	bool flag = false;
+	if (!tokenName.empty()) flag = true;
 	string name;
 	string pw;
 	while (true) {
@@ -52,6 +58,11 @@ int main() {
 			}
 			else {
 				flag = true;
+
+				token.open("token.txt",ios::out);
+				token << name; //로그인 토큰에 등록
+				token.close();
+
 				cout << name << "님 어서오세요" << endl;
 			}
 		}
