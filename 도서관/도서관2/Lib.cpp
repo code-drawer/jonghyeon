@@ -63,7 +63,11 @@ bool Lib::log_in(string name, string pw) {
 }
 
 void Lib::bollow_book(string name, string pw) {
-	cout << "빌릴 책을 입력하시오" << endl;
+	cout << "어떤 책을 빌리시겠습니까?" << endl;
+	for (const auto& elem : books)
+		cout << elem.bookName << " " << elem.author << endl;
+
+	cout << "빌릴 책의 이름을 입력하시오" << endl;
 	string bookName;
 	cin >> bookName;
 	cout << "저자를 입력하시오" << endl;
@@ -85,22 +89,31 @@ void Lib::bollow_book(string name, string pw) {
 	else bookIter->대출여부 = true;
 
 	auto userIter = find_if(users.begin(), users.end(),
-		[name, pw](User temp) {return temp.userName == name and temp.pw == pw; });
+		[name, pw](User temp) {return temp.userName == name; });
 
 	userIter->대출목록.push_back(bookIter);
 
-	/*fstream file{ "books.txt",ios::out | ios::app };
-	file << true;
-	file.close();*/
+	fstream file{ "books.txt",ios::out };
+	for (auto iter = books.begin(); iter != books.end(); iter++) {
+		file << iter->bookName << "," << iter->author << "," << iter->대출여부 << endl;
+	}
+	file.close();
+	file.open("users.txt", ios::out);
+	for (auto iter = users.begin(); iter != users.end(); iter++) {
+		file << iter->userName << "," << iter->pw;
+		for_each(iter->대출목록.begin(), iter->대출목록.end(), [&file](vector<Book>::iterator temp) { file << "," << temp->bookName << "," << temp->author << endl; });
+	}
+	file.close();
 }
 
 void Lib::return_book(string name, string pw) {
 	auto userIter = find_if(users.begin(), users.end(),
-		[name, pw](User temp) { return temp.userName == name and temp.pw == pw; });
+		[name, pw](User temp) { return temp.userName == name; });
 
 	if (userIter->대출목록.empty()) {
 		cout<< "아직 빌린 책이 없어요ㅠㅠ" << endl;
-		return; }
+		return;
+	}
 
 	cout << "어떤 책을 반납하시겠습니까?" << endl;
 	for (const auto& elem : userIter->대출목록)
@@ -129,6 +142,21 @@ void Lib::return_book(string name, string pw) {
 		//삭제한 bookIter가 가리키는 Book객체(books의 원소)의 '대출여부'를 false로 바꾸어야 한다.
 
 		userIter->대출목록.erase(bookIter);
+
+
+		fstream file{ "books.txt",ios::out };
+		for (auto iter = books.begin(); iter != books.end(); iter++) {
+			file << iter->bookName << "," << iter->author << "," << iter->대출여부 << endl;
+		}
+		file.close();
+		file.open("users.txt", ios::out);
+		for (auto iter = users.begin(); iter != users.end(); iter++) {
+			file << iter->userName << "," << iter->pw;
+			for_each(iter->대출목록.begin(), iter->대출목록.end(), [&file](vector<Book>::iterator temp) { file << "," << temp->bookName << " " << temp->author << endl; });
+			if (iter->대출목록.begin() == iter->대출목록.end())
+				file << endl;
+		}
+		file.close();
 	}
 }
 // *(v.begin()) == v[0]가 성립한다.

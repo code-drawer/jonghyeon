@@ -7,6 +7,7 @@
 using namespace std;
 
 class Lib {
+public:
 	class Book { //클래스의 이름은 대문자로 시작한다.
 	public:
 		string bookName;
@@ -24,9 +25,10 @@ class Lib {
 		string userName;
 		string pw;
 		vector<vector<Book>::iterator> 대출목록; //벡터클래스의 이터레이터
-		User(string userName, string pw) {
+		User(string userName, string pw, vector<vector<Book>::iterator> 대출목록 = {}) {
 			this->userName = userName;
 			this->pw = pw;
+			this->대출목록 = 대출목록;
 		}
 	};
 
@@ -41,8 +43,8 @@ public:
 	void user_list();
 	void add_user();
 	void del_user();
-	void bollow_book(string name, string pw);
-	void return_book(string name, string pw);
+	void bollow_book(string name, string pw = "");
+	void return_book(string name, string pw = "");
 
 	vector<Book>& get_books() {
 		return books;
